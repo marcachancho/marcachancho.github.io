@@ -1,22 +1,35 @@
-window.onload = function() {
 
-		//  Note that this html file is set to pull down Phaser 2.5.0 from the JS Delivr CDN.
-		//  Although it will work fine with this tutorial, it's almost certainly not the most current version.
-		//  Be sure to replace it with an updated version before you start experimenting with adding your own code.
 
-		var game = new Phaser.Game(800, 500, Phaser.AUTO, '', { preload: preload, create: create });
+var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '', { preload: preload, create: create });
 
-		function preload () {
+function preload () {
 
-			game.load.image('logo', 'phaser.png');
+	game.load.image('logo', 'phaser.png');
+}
 
-		}
+function create () {
 
-		function create () {
+	var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+	logo.anchor.setTo(0.5, 0.5);
 
-			var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-			logo.anchor.setTo(0.5, 0.5);
+	// resizeGame();
+}
 
-		}
+function resizeGame(){
+	var height = window.innerHeight;
+	var width = window.innerWidth;
+	 
+	game.width = width;
+	game.height = height;
+	// game.stage.bounds.width = width;
+	// game.stage.bounds.height = height;
+	 
+	if (game.renderType === 1) {
+	    game.renderer.resize(width, height);
+	    Phaser.Canvas.setSmoothingEnabled(game.context, false);
+	}
+}
 
-	};
+window.onresize = function() {
+	window.resizeGame();
+}
