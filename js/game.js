@@ -1,22 +1,17 @@
-window.onload = function() {
+var game = new Phaser.Game(800, 500, Phaser.AUTO, '', { preload: preload, create: create });
 
-		//  Note that this html file is set to pull down Phaser 2.5.0 from the JS Delivr CDN.
-		//  Although it will work fine with this tutorial, it's almost certainly not the most current version.
-		//  Be sure to replace it with an updated version before you start experimenting with adding your own code.
+function preload () {
 
-		var game = new Phaser.Game(800, 500, Phaser.AUTO, '', { preload: preload, create: create });
+	game.load.text('dictionary', 'static/coa.txt');
+	game.load.image('logo', 'phaser.png');
 
-		function preload () {
+}
 
-			game.load.image('logo', 'phaser.png');
+function create () {
 
-		}
+	var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+	logo.anchor.setTo(0.5, 0.5);
 
-		function create () {
+	console.log(game.dictionary)
 
-			var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-			logo.anchor.setTo(0.5, 0.5);
-
-		}
-
-	};
+}
