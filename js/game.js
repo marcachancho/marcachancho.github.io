@@ -1,36 +1,47 @@
 var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '', { preload: preload, create: create });
+var dictionary;
+var viewModel;
 
-function preload () {
-	game.load.json('dictionary', 'static/coa.json');
-	game.load.spritesheet('button', 'assets/sprites/button.png', 100,100);
+var step = 0;
+
+ function preload () {
+ 	game.load.json('dictionary', 'static/coa.json');
 }
 
-var question;
 
-var answer1;
-var answer2;
-var answer3;
-var answer4;
-
-function create () {
-	game.stage.backgroundColor = '#D9D9D9'
+ function create () {
+	game.stage.backgroundColor = '#000000';
 	
-	var dictionary = loadDictionary();
+	dictionary = loadDictionary();
 
-	var clase = new ViewModel();
-	clase.getList();
+	viewModel = new WordDefinitionViewModel(reset);
 
-	answer1 = createAnswer(0);
-	answer2 = createAnswer(1);
-	answer3 = createAnswer(2);
-	answer4 = createAnswer(3);
+	var words = dictionary.slice(step, step + 4);
+
+	words.forEach(function (word) {
+		viewModel.addWord(word);
+	})
+	
+	viewModel.render();
+	
+}
+
+function reset() {
+	step = step + 5
+	var words = dictionary.slice(step, step + 4);
+
+	words.forEach(function (word) {
+		viewModel.addWord(word);
+	})
+	
+	viewModel.render();
 }
 
 function loadDictionary(){
 	var dictionary = shuffle(game.cache.getJSON('dictionary'));
-	console.log(dictionary.slice(0,5));
+	
 	return dictionary;
-}
+ }
 
 function shuffle(array) {
 	var currentIndex = array.length, temporaryValue, randomIndex;
@@ -49,28 +60,6 @@ function shuffle(array) {
 	return array;
 }
 
-function createAnswer(position){
-	var text = game.add.text(game.world.centerX, game.world.centerY + position*70, "click and drag me", { font: "65px Arial", fill: "#ff0044", align: "center" });
-	text.anchor.set(0.5);
-	text.inputEnabled = true;
-	text.events.onInputOver.add(over, this);
-	text.events.onInputOut.add(out, this);
-	text.events.onInputDown.add(down, this);
-	text.events.onInputUp.add(up, this);
-	return text;
-}
-
-function render() {
-
-	var textGroup = game.add.group();
-
-	for (var i = 0; i < 300; i++) {
-		textGroup.add(game.make.text(32, i * 20, text[i]))
-		console.log(text[i])
-	}
-
-}
-
 function resizeGame() {
 	var height = window.innerHeight;
 	var width = window.innerWidth;
@@ -87,29 +76,3 @@ function resizeGame() {
 window.onresize = function() {
 	window.resizeGame();
 }
-
-function over(item) {
-
-    item.fill = "#ffff44";
-}
-
-function out(item) {
-
-    item.fill = "#ff0044";
-    item.text = "click and drag me";
-
-}
-
-function down(item) {
-
-    item.text = "clicked times";
-
-}
-
-function up(item) {
-
-    item.text = "thanks for clicking!";
-
-}
-
-

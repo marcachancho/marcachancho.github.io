@@ -10,7 +10,7 @@ for line in f:
 
     dictonary.append({
         'word': word,
-        'value': value,
+        'definition': value,
     })
 
 with open('coa.json', 'w') as outfile:
