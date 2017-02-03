@@ -1,12 +1,38 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<title>Marca Chancho</title>
-		<script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
-	</head>
-	<body>
-		<script type="text/javascript" src="js/viewModel.js"> </script>
-		<script type="text/javascript" src="js/game.js"> </script>
-	</body>
+<head>
+	<title>Marca Chancho</title>
+	<meta charset="UTF-8" />
+
+	<link rel="stylesheet" href="css/stylesheet.css" type="text/css" charset="utf-8" />
+	
+	<script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
+	<script src="src/Utils.js"></script>
+	<script src="src/Boot.js"></script>
+	<script src="src/Preloader.js"></script>
+	<script src="src/MainMenu.js"></script>
+	<script src="src/Game.js"></script>
+</head>
+<body>
+	
+	<div id="game"></div>
+	<div id="orientation"></div>
+
+<script type="text/javascript">
+
+window.onload = function () {
+
+	var game = new Phaser.Game(512, 384, Phaser.AUTO, 'game');
+
+	game.state.add('Boot', MarcaChancho.Boot);
+	game.state.add('Preloader', MarcaChancho.Preloader);
+	game.state.add('MainMenu', MarcaChancho.MainMenu);
+	game.state.add('Game', MarcaChancho.Game);
+
+	game.state.start('Boot');
+
+}
+</script>
+
+</body>
 </html>
