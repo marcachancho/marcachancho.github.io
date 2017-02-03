@@ -4,9 +4,6 @@ MarcaChancho.MainMenu = function (game) {
 	this.music = null;
 	this.playButton = null;
 
-    this.cities = [];
-    this.heights = [ 2, 3, 3, 3, 4, 4, 5, 5, 5, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 10, 10, 10, 12, 14, 14 ];
-
 };
 
 MarcaChancho.MainMenu.prototype = {
@@ -16,6 +13,8 @@ MarcaChancho.MainMenu.prototype = {
 		// this.music = this.add.audio('titleMusic');
 		// this.music.play();
 
+		var text = this.add.bitmapText(0, 64, 'rollingThunder', 'MARCA CHANCHO', 32);
+	    text.x = 256 - (text.textWidth / 2);
 	    
         this.input.onDown.addOnce(this.startGame, this);
 

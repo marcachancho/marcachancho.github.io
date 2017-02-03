@@ -32,8 +32,8 @@ MarcaChancho.Boot.prototype = {
             this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.scale.minWidth = 320;
             this.scale.minHeight = 240;
-            this.scale.maxWidth = 640;
-            this.scale.maxHeight = 480;
+            this.scale.maxWidth = window.innerWidth;
+            this.scale.maxHeight = window.innerHeight;
             this.scale.pageAlignHorizontally = true;
             this.scale.pageAlignVertically = true;
             this.scale.updateLayout(true);

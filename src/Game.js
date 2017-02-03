@@ -1,10 +1,87 @@
-MarcaChancho.Game = function (name) {
-	// body...
+MarcaChancho.Game = function (game) {
+	this.dictionary;
+
+	this.step;
+	this.randomIndexes;
+	this.batch;
+
+	this.guess;
+	this.options = [];
 }
 
 MarcaChancho.Game.prototype = {
 	create: function () {
+		this.stage.backgroundColor = '#000000';
 
+		this.dictionary = this.cache.getJSON('dictionary');
+
+		this.guess = this.game.add.text(
+				this.game.world.centerX,
+				50,
+				"",
+				{
+					font: "50px Arial",
+					fill: "#ffff44",
+					align: "center"
+				}
+			);
+		this.guess.anchor.set(0.5);
+		this.guess.inputEnabled = true;
+
+		for (var index = 0; index < 4; index++) {
+			var option = this.game.add.text(
+					this.game.world.centerX,
+					50 * (index + 3),
+					"",
+					{
+						font: "15px Arial",
+						align: "center"
+					}
+				);
+			option.anchor.set(0.5);
+			option.inputEnabled = true;
+
+			option.events.onInputDown.add(this.onDown, this);
+
+			this.options.push(option);
+		}
+		
+		this.reset();
+
+	},
+
+	onDown: function (item) {
+		var index = item.renderOrderID - 1;
+		var currentIndex = this.randomIndexes[this.step]
+		if (index == currentIndex)
+		{
+			this.options[index].text = this.batch[index].word;
+			this.options[index].fill = "#ffff44";
+			
+			this.step++;
+			if (this.step < 4) {
+				var currentIndex = this.randomIndexes[this.step];
+				this.guess.text = this.batch[currentIndex].word;
+			} else {
+				this.reset();
+			}
+
+		}
+	},
+
+	reset: function () {
+		this.step = 0;
+		this.randomIndexes = Utils.shuffle([0, 1, 2, 3]);
+		this.batch = Utils.getRandom(this.dictionary, 4);
+
+		var currentIndex = this.randomIndexes[this.step];
+		this.guess.text = this.batch[currentIndex].word;
+
+		for (var index = 0; index < 4; index++) {
+			var option = this.options[index];
+			option.text = this.batch[index].definition;
+			option.fill = "#ff0044";
+		}
 	},
 
 	update: function () {
@@ -17,85 +94,3 @@ MarcaChancho.Game.prototype = {
 
 	}
 };
-
-// var dictionary;
-// var viewModel;
-
-// var step = 0;
-
-//  function preload () {
-//  	game.load.json('dictionary', 'static/coa.json');
-// }
-
-
-//  function create () {
-// 	game.stage.backgroundColor = '#000000';
-	
-// 	dictionary = loadDictionary();
-
-// 	viewModel = new WordDefinitionViewModel(reset);
-
-// 	var words = dictionary.slice(step, step + 4);
-
-// 	words.forEach(function (word) {
-// 		viewModel.addWord(word);
-// 	})
-	
-// 	viewModel.render();
-	
-// }
-
-// function update() {
-	
-// }
-
-// function reset() {
-// 	step = step + 5
-// 	var words = dictionary.slice(step, step + 4);
-
-// 	words.forEach(function (word) {
-// 		viewModel.addWord(word);
-// 	})
-	
-// 	viewModel.render();
-// }
-
-// function loadDictionary(){
-// 	var dictionary = shuffle(game.cache.getJSON('dictionary'));
-	
-// 	return dictionary;
-//  }
-
-// function shuffle(array) {
-// 	var currentIndex = array.length, temporaryValue, randomIndex;
-
-// 	while (0 !== currentIndex) {
-
-// 		randomIndex = Math.floor(Math.random() * currentIndex);
-// 		currentIndex -= 1;
-
-// 		// And swap it with the current element.
-// 		temporaryValue = array[currentIndex];
-// 		array[currentIndex] = array[randomIndex];
-// 		array[randomIndex] = temporaryValue;
-// 	}
-
-// 	return array;
-// }
-
-// function resizeGame() {
-// 	var height = window.innerHeight;
-// 	var width = window.innerWidth;
-
-// 	game.width = width;
-// 	game.height = height;
-
-// 	if (game.renderType === 1) {
-// 		game.renderer.resize(width, height);
-// 		Phaser.Canvas.setSmoothingEnabled(game.context, false);
-// 	}
-// }
-
-// window.onresize = function() {
-// 	window.resizeGame();
-// }
